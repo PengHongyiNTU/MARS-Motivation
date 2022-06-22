@@ -1,13 +1,11 @@
-
 from torch.nn import Module
 from torch.nn import Conv2d, BatchNorm2d
 from torch.nn import Flatten
 from torch.nn import Linear
 from torch.nn import MaxPool2d
 from torch.nn import ReLU
-import torch
-import torch.nn as nn
 import torch.nn.functional as F
+
 
 class ConvNet2(Module):
     def __init__(self,
