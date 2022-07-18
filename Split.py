@@ -57,3 +57,16 @@ class LDASplitter(object):
 
     def __repr__(self):
         return f'{self.__class__.__name__}(client_num={self.client_num}, alpha={self.alpha})'
+
+
+class IIDSplitter(object):
+    def __init__(self, client_num):
+        self.client_num = client_num
+
+    def __call__(self, dataset):
+        dataset = [ds for ds in dataset]
+        data_list = [dataset[i::self.client_num] for i in range(self.client_num)]
+        return data_list
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(client_num={self.client_num})'

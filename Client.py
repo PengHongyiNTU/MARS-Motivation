@@ -32,7 +32,7 @@ class FedAvgClient(Client):
         pass
 
     def __repr__(self):
-        output =
+        pass
 
     def _log(self):
         pass
