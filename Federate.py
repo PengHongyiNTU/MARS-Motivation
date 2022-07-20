@@ -1,19 +1,16 @@
-class FedAvg:
-    def __init__(self, name):
-        self.name = name
-        self.total = 0
-        self.count = 0
+class Simulator:
+    def __init__(self, cfg):
+        self.cfg = cfg
+  
+    def run(self):
+        pass
+    
+    def init_wandb(self):
+        pass
+    
+    def make_models(self):
+        pass
 
-    def update(self, value):
-        self.total += value
-        self.count += 1
-
-    def __str__(self):
-        return '{} ({}): {}'.format(self.name, self.count, self.total)
-
-class FedSGD:
-    def __init__(self, name, lr):
-        self.name = name
-        self.lr = lr
-        self.total = 0
-        self.count = 0
+    def make_data(self):
+        pass
+    

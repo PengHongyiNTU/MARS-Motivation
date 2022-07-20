@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def dirichlet_distribution_noniid_slice(label, client_num, alpha, min_size=10):
     r"""Get sample index list for each client from the Dirichlet distribution.
     https://github.com/FedML-AI/FedML/blob/master/fedml_core/non_iid_partition/noniid_partition.py
@@ -42,7 +41,7 @@ def dirichlet_distribution_noniid_slice(label, client_num, alpha, min_size=10):
     return idx_slice
 
 
-class LDASplitter(object):
+class LDASplitter:
     def __init__(self, client_num, alpha=0.5):
         self.client_num = client_num
         self.alpha = alpha
@@ -59,7 +58,7 @@ class LDASplitter(object):
         return f'{self.__class__.__name__}(client_num={self.client_num}, alpha={self.alpha})'
 
 
-class IIDSplitter(object):
+class IIDSplitter:
     def __init__(self, client_num):
         self.client_num = client_num
 
