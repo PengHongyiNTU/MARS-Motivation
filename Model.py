@@ -7,6 +7,7 @@ from torch.nn import ReLU
 import torch.nn.functional as F
 
 
+# Normally Federated learning do not use batch normalization
 class ConvNet2(Module):
     def __init__(self,
                  in_channels,
@@ -14,7 +15,7 @@ class ConvNet2(Module):
                  w=32,
                  hidden=2048,
                  class_num=10,
-                 use_bn=True,
+                 use_bn=False,
                  dropout=.0):
         super(ConvNet2, self).__init__()
 

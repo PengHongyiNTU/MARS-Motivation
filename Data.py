@@ -117,7 +117,7 @@ class ImbalancedNoisyDataWrapper(Dataset):
 
 if __name__ == '__main__':
     raw_dataset, _ = load_centralized_dataset(
-        name='MNIST', validation_split=0, download=False)
+        name='MNIST', validation_split=0, download=True)
     balanced_dataset = ImbalancedNoisyDataWrapper(
         base_dataset=raw_dataset,
         corruption_prob=0,
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     axes[1].set_title('Imbalanced')
     axes[2].hist(flipped_imnbalanced_labels, bins=10)
     axes[2].set_title('Flipped Imbalanced')
-    plt.show()
+    plt.savefig('DataDistribution.png')
     
     
         
