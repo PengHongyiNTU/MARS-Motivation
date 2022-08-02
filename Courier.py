@@ -23,7 +23,7 @@ class StandAloneOneGPUCourier(Courier):
         super().__init__(clients_list)
     
     def respond(self, dst, server_message):
-            self.response_pool[dst] = server_message
+        self.response_pool[dst] = server_message
 
     def post(self, src, message):
         self.message_pool[src] = message
@@ -35,4 +35,5 @@ class StandAloneOneGPUCourier(Courier):
     def flush(self):
         map(lambda x: x.clear(), self.response_pool.values())
         map(lambda x: x.clear(), self.message_pool.values())
+
 

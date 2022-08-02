@@ -6,7 +6,7 @@ from typing import Dict
 import tqdm
 import wandb
 import time
-from Federate import Courier
+import tqdm 
 
 
 
@@ -15,13 +15,12 @@ class Client(ABC):
     optimizer: Optimizer
     dataloader: DataLoader
     message: Dict
-    courier: Courier
     @abstractmethod
     def local_update(self):
         pass
 
     @abstractmethod
-    def send(self):
+    def send(self) -> Dict:
         pass
     
     @abstractmethod
@@ -29,10 +28,11 @@ class Client(ABC):
         pass
 
 
-class FedAvgClient(Client):
-    def __init__(self, client_id, model, optimizer, dataloader, criterion, courier):
+class BaseClient(Client):
+    def __init__(self, client_id, model,  dataloader, optimizer, 
+                 criterion, device='cpu'):
         self.id = client_id
-        self.model = model
+        self.model = model.to(device)
         self.optimizer = optimizer
         self.dataloader = dataloader
         self.criterion = criterion
@@ -43,7 +43,6 @@ class FedAvgClient(Client):
             'train_time': None,
             'message_bytes': None          
         }
-        self.courier = courier
         wandb.watch(self.model)
              
     def local_update(self, local_epoch, round):
@@ -53,7 +52,9 @@ class FedAvgClient(Client):
         for e in pbar:
             running_loss = 0.0
             batch_loss = 0.0 
-            for batch_idx, (data, target) in enumerate(self.dataloader):
+            pbar = tqdm(self.dataloader)
+            for batch_idx, (data, target) in enumerate(pbar):
+                data, target = data.to(self.model.device), target.to(self.model.device)
                 self.optimizer.zero_grad()
                 output = self.model(data)
                 loss = self.criterion(output, target)
@@ -76,14 +77,19 @@ class FedAvgClient(Client):
         # after local training send the local paramters 
         
         
-
     def send(self):
-        pass
+        return self.message
+        # self.courier.post(self.id, self.message)
+        
     
-    def fetch(self):
+    def fetch(self, server_message):
         pass
+        # received = self.courier.fetch(self.id)
 
     def __repr__(self):
-        pass
+        print(f'Client {self.id}, Model Type {self.model.__name__}')
+        print(f'Message Contains: {self.message.keys()}')
+
+        
 
 
