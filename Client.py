@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from torch.utils.data import DataLoader
 from torch.optim import Optimizer
 from torch.nn import Module
-from typing import Dict
+from typing import Dict, List
 import tqdm
 import wandb
 import time
@@ -11,31 +11,25 @@ import tqdm
 
 
 class Client(ABC):
-    model: Module
-    optimizer: Optimizer
-    dataloader: DataLoader
+    data_idx: List[int]
     message: Dict
     @abstractmethod
-    def local_update(self):
+    def local_update(self, trainer):
         pass
 
     @abstractmethod
-    def send(self) -> Dict:
+    def send(self, strategey):
         pass
     
     @abstractmethod
-    def fetch(self, server_message):
+    def fetch(self, strategy):
         pass
 
 
-class BaseClient(Client):
-    def __init__(self, client_id, model,  dataloader, optimizer, 
-                 criterion, device='cpu'):
+class BaseSimulationClient(Client):
+    def __init__(self, client_id, data_idx):
         self.id = client_id
-        self.model = model.to(device)
-        self.optimizer = optimizer
-        self.dataloader = dataloader
-        self.criterion = criterion
+        self.data_idx = data_idx
         self.message = {
             'id': self.id,
             'model_parameters': None,
@@ -43,7 +37,6 @@ class BaseClient(Client):
             'train_time': None,
             'message_bytes': None          
         }
-        wandb.watch(self.model)
              
     def local_update(self, local_epoch, round):
         print(f'Round {round}: Client {self.id} was selected. Start Local Training.')

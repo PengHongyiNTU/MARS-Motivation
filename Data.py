@@ -1,5 +1,6 @@
 from cgi import test
 from email.mime import base
+from re import S
 from matplotlib.pyplot import axes
 from torchvision import transforms
 from torch.utils.data import DataLoader
@@ -8,12 +9,18 @@ import torch
 from Noise import uniform_mix_C, flip_labels_C, flip_labels_C_two
 from torch.utils.data import Dataset
 import numpy as np
+from torchvision import transforms
+
 
 
 def load_centralized_dataset(name='MNIST', validation_split=0, download=False):
     if name == 'MNIST':
-        train_dataset = MNIST(root='./data', train=True, download=download)
-        test_dataset = MNIST(root='./data', train=False, download=download)
+        train_dataset = MNIST(root='./data', train=True, 
+                              download=download, transform=transforms.Compose(
+    [transforms.ToTensor()]))
+        test_dataset = MNIST(root='./data', train=False, 
+                             download=download,transform=transforms.Compose(
+    [transforms.ToTensor()]))
     if name == "CIFAR10":
         # use torch vision to load CIFAR10  
         train_dataset = CIFAR10(root='./data', train=True, download=download)
@@ -75,9 +82,12 @@ class ImbalancedNoisyDataWrapper(Dataset):
                 self.flipped_labels[i] = y_corrupted
                 
                 
-    def get_restored_dataset(self):
-        # To compute restored gradient 
-        return torch.utils.data.Subset(self.dataset, np.where(self.is_flipped == 0)[0])
+    def get_restored_idxs(self, num_samples=1000):
+        # number of fi;pped index
+        idx = np.where(self.is_flipped == 1)[0]
+        num_samples = max(num_samples, len(idx))
+        seleceted_idxs = np.random.choice(idx, num_samples, replace=False)
+        return seleceted_idxs
     
     def _downsample_datasets(self):
         # downsample the dataset according to the imbalanced ratio
@@ -106,6 +116,7 @@ class ImbalancedNoisyDataWrapper(Dataset):
     def __getitem__(self, index):
         x, y = self.dataset[index]
         y_corrupted = self.flipped_labels[index]
+        y_corrupted = torch.tensor(y_corrupted, dtype=torch.long)
         return x, y_corrupted
 
     def __repr__(self):
@@ -114,10 +125,13 @@ class ImbalancedNoisyDataWrapper(Dataset):
         output += f'\nNumber of classes : {self.num_classes}, Portion per class : {self.portion_per_class}'
         return output
     
+    def get_a_fipped_subset(self, num_samples):
+        return torch.utils.data.Subset(self.dataset, np.where(self.is_flipped == 1)[0][:num_samples])
+    
 
 if __name__ == '__main__':
     raw_dataset, _ = load_centralized_dataset(
-        name='MNIST', validation_split=0, download=True)
+        name='MNIST', validation_split=0, download=False)
     balanced_dataset = ImbalancedNoisyDataWrapper(
         base_dataset=raw_dataset,
         corruption_prob=0,
@@ -136,6 +150,7 @@ if __name__ == '__main__':
     print(balanced_dataset)
     print(imbalanced_dataset)
     print(flipped_imnbalanced_dataset)
+    # print(flipped_imnbalanced_dataset[0])
     ## Plot histogram of the labels
     raw_labels = np.array([labels for _, labels in balanced_dataset])
     imbalanced_labels = np.array([labels for _, labels in imbalanced_dataset])

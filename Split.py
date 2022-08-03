@@ -45,15 +45,21 @@ class LDASplitter:
     def __init__(self, client_num, alpha=0.5):
         self.client_num = client_num
         self.alpha = alpha
+        self.clients_dataidx_map = dict.fromkeys(
+            list(range(client_num))
+        )
 
     def __call__(self, dataset):
-        dataset = [ds for ds in dataset]
         label = np.array([y for x, y in dataset])
-        idx_slice = dirichlet_distribution_noniid_slice(
+        idxs_slice = dirichlet_distribution_noniid_slice(
             label, self.client_num, self.alpha)
-        data_list = [[dataset[idx] for idx in idxs] for idxs in idx_slice]
-        return data_list
-
+        for i, idx in enumerate(idxs_slice):
+            self.clients_dataidx_map[i] = idx
+        print('Splitting dataset into {} clients.'.format(self.client_num))
+        print({id: len(idxs) for id, idxs in self.clients_dataidx_map.items()})
+        return self.clients_dataidx_map
+        
+        
     def __repr__(self):
         return f'{self.__class__.__name__}(client_num={self.client_num}, alpha={self.alpha})'
 
@@ -61,11 +67,32 @@ class LDASplitter:
 class IIDSplitter:
     def __init__(self, client_num):
         self.client_num = client_num
+        self.clients_dataidx_map = dict.fromkeys(
+            list(range(client_num))
+        )
 
     def __call__(self, dataset):
-        dataset = [ds for ds in dataset]
-        data_list = [dataset[i::self.client_num] for i in range(self.client_num)]
-        return data_list
+        idxs = np.arange(len(dataset))
+        idxs_slice = np.split(idxs, self.client_num)
+        for i, idx in enumerate(idxs_slice):
+            self.clients_dataidx_map[i] = idx
+        print('Splitting dataset into {} clients.'.format(self.client_num))
+        print({id: len(idxs) for id, idxs in self.clients_dataidx_map.items()})
+        return self.clients_dataidx_map
+
+
 
     def __repr__(self):
         return f'{self.__class__.__name__}(client_num={self.client_num})'
+
+if __name__ == "__main__":
+   from Data import load_centralized_dataset, ImbalancedNoisyDataWrapper
+   train_set, test_set = load_centralized_dataset(
+       name='MNIST', validation_split=0, 
+   )
+   client_num = 10
+   alpha = 0.5
+   niid_splitter = LDASplitter(client_num, alpha)
+   iid_splitter = IIDSplitter(client_num)
+   clients_dataidx_map = niid_splitter(train_set)
+   clients_dataidx_map = iid_splitter(train_set)

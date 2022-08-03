@@ -35,5 +35,8 @@ class BaseServer(Server):
         return self.client_list
     
     def evaluate(self):
+    
+    def aggregate(self):
+        pass
         
 

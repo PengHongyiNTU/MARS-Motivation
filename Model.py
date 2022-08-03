@@ -17,7 +17,6 @@ def load_model(model_type, *args, **kwargs):
         return ConvNet5(*args, **kwargs)
     if model_type == "VGG11":
         return vgg11()
-    """
     elif model_type == 'ResNet18':
         return resnet18(weights=None)
     elif model_type == 'ResNet34':
@@ -26,7 +25,6 @@ def load_model(model_type, *args, **kwargs):
         return resnet50(weights=None)
     else:
         raise ValueError(f'Unknown model type: {model_type}')
-    """
 
 
     
@@ -137,9 +135,9 @@ if __name__ == "__main__":
     conv5 = conv5.cuda()
     vgg11 = load_model('VGG11')
     vgg11 = vgg11.cuda()
-    print(summary(conv2, (16, 3, 32, 32)))
-    print(summary(conv5, (16, 3, 32, 32)))
-    print(summary(vgg11, (16, 3, 224, 224)))
+    summary(conv2, (16, 3, 32, 32))
+    summary(conv5, (16, 3, 32, 32))
+    summary(vgg11, (16, 3, 224, 224))
     
     
     
