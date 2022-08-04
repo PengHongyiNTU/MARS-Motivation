@@ -33,7 +33,17 @@ def accuracy(pred, target):
     total = len(pred)
     return correct / total
     
-    
+
+def layerwise_diff(params1, params2):
+    """Compute the difference between two sets of parameters."""
+    diff_table = dict.fromkeys(params1.keys())
+    with torch.no_grad():
+        for param_name in params1.keys():
+            diff = torch.norm(params1[param_name].cpu().float() - params2[param_name].cpu().float())
+            diff_table[param_name] = diff.detach().numpy()
+        return diff_table
+
+        
 
 if __name__ == "__main__":
     print(get_best_gpu())

@@ -22,9 +22,13 @@ def load_centralized_dataset(name='MNIST', validation_split=0, download=False):
                              download=download,transform=transforms.Compose(
     [transforms.ToTensor()]))
     if name == "CIFAR10":
+        transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
         # use torch vision to load CIFAR10  
-        train_dataset = CIFAR10(root='./data', train=True, download=download)
-        test_dataset = CIFAR10(root='./data', train=False, download=download)
+        train_dataset = CIFAR10(root='./data', train=True, download=download, 
+                                transform=transforms)
+        test_dataset = CIFAR10(root='./data', train=False, download=download,
+                               transforms=transforms)
+    
     if validation_split > 0:
         if isinstance(validation_split, float):
             val_size = int(validation_split* len(train_dataset))

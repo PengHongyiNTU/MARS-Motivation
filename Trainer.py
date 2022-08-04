@@ -8,6 +8,7 @@ import tqdm
 import FedAvg
 import torch
 import os
+from Utils import layerwise_diff
 
 def random_selection(client_ids, num_selected):
     return np.random.choice(client_ids, num_selected, replace=False)
@@ -34,9 +35,13 @@ class LocalTrainer:
         self.global_dir = os.path.join(saving_dir, 'global')
         if not os.path.exists(self.global_dir):
             os.makedirs(self.global_dir)
-        self.log_dir = os.path.join(saving_dir, 'logs')
-        if not os.path.exists(self.log_dir):
-            os.makedirs(self.log_dir)
+        columns = ['epoch', 'id']
+        param_names = [param_name for param_name in 
+                       self.global_model.state_dict().keys()]
+        columns += param_names
+        first_row = [0, 'global'] + [0]*len(param_names)
+        self.table = wandb.Table(columns=columns, data=[first_row])
+        
                           
     
     def evaluate(self):
@@ -108,6 +113,7 @@ class LocalTrainer:
             selected_ids = random_selection(client_ids, num_clients_per_round)
             print(f'Round {e+1}: Selected Clients: {selected_ids}')
             params_dict = dict.fromkeys(selected_ids)
+            selected_avg_loss = [0]*len(selected_ids)
             for id in selected_ids:
                 print()
                 data_idx = self.clients_dataidx_map[id]
@@ -119,20 +125,57 @@ class LocalTrainer:
                 local_model.load_state_dict(global_model_params)
                 optimizer = torch.optim.SGD(local_model.parameters(), lr=lr)
                 criterion = torch.nn.CrossEntropyLoss()
-                updated_params = FedAvg.local_train(id, local_model, 
+                
+                updated_params, loss = FedAvg.local_train(id, local_model, 
                                                     train_loader, 
                                    optimizer, criterion, local_epoch, 
-                                   self.device, self.cfg['log_freq'])
+                                   self.device)
                 params_dict[id] = updated_params
+                selected_avg_loss.append(loss)
             torch.save(params_dict, f'{self.local_dir}/local_model_{e}.pth')
             communication_cost += len(selected_ids) * model_size
             wandb.log({'Communication Cost': communication_cost})
+            logging_msg = { f'Selected Clients {i}': selected_avg_loss[i]
+                for i in range(len(selected_avg_loss))
+            }
+            wandb.log(logging_msg)
+            for id, params in params_dict.items():
+                row = list(layerwise_diff(params, global_model_params).values())
+                row = [e, id] + row
+                self.table.add_data(*row)
+            wandb.log({'layerwise_diff': self.table})  
             global_params = FedAvg.aggregate(params_dict)
             self.global_model.load_state_dict(global_params)
             self.evaluate()
         torch.save(self.global_model.state_dict(), f'{self.global_dir}/global_model_final.pth')    
                 
-            
+if __name__ == "__main__":
+    import yaml
+    from Trainer import LocalTrainer
+    from Split import IIDSplitter
+    from Data import load_centralized_dataset
+    from Model import ConvNet2
+    import wandb
+    from Data import ImbalancedNoisyDataWrapper
+    wandb.login()
+    cfg = yaml.safe_load(open('sample.yaml'))
+    model = ConvNet2(in_channels=1, h=28, w=28,
+                 hidden=2048, class_num=10,  dropout=.0)
+    dataset_name = cfg['dataset']
+    trainset, testset = load_centralized_dataset(
+    dataset_name, validation_split=0, download=False)
+    trainset = ImbalancedNoisyDataWrapper(
+        trainset, corruption_prob=cfg['corruption_prob'],
+        imblanced_ratio=0, num_classes=10, seed=1, noise_type='uniform')
+    client_num = 10
+    iid_splliter = IIDSplitter(client_num)
+    clients_dataidx_map = iid_splliter(trainset)
+    with wandb.init(project='debug', config=cfg):
+        trainer = LocalTrainer(model, clients_dataidx_map,
+                           trainset, testset, cfg)
+        trainer.train()
+        trainer.evaluate()
+           
                 
                 
    

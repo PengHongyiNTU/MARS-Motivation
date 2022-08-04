@@ -4,7 +4,7 @@ import torch
 
 
 def local_train(id, local_model, local_loader, optimizer, 
-                    criterion, local_epoch, device, log_freq):
+                    criterion, local_epoch, device):
  
     local_model.to(device)
     local_model.train()
@@ -21,10 +21,7 @@ def local_train(id, local_model, local_loader, optimizer,
             optimizer.step()
             running_loss += loss.item()
             pbar.set_postfix_str(f'Epoch: {e} Loss: {running_loss:.3f} ')
-            if batch_idx % log_freq == log_freq - 1:
-                wandb.log({f'client_{id}': running_loss})
-                running_loss = 0.0
-    return local_model.state_dict()
+    return local_model.state_dict(), running_loss
         
     
 def aggregate(params_dict):
