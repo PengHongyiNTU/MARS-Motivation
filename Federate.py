@@ -42,7 +42,7 @@ class Simulator:
                 raise ValueError("model on MNIST must be ConvNet2 or ConvNet5")            
         return model
     
-    def make_data(self):
+    def make_data(self, mode=''):
         dataset_name = self.cfg['dataset']
         trainset, testset = Data.load_centralized_dataset(
             dataset_name, validation_split=0, download=False)

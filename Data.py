@@ -1,9 +1,5 @@
-from cgi import test
-from email.mime import base
-from re import S
 from matplotlib.pyplot import axes
 from torchvision import transforms
-from torch.utils.data import DataLoader
 from torchvision.datasets import MNIST, CIFAR10
 import torch
 from Noise import uniform_mix_C, flip_labels_C, flip_labels_C_two

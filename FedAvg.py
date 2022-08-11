@@ -36,7 +36,6 @@ def aggregate(params_dict):
         for param_name in global_params.keys():
             dtype = global_params[param_name].dtype
             global_params[param_name] = (global_params[param_name] / num_clients).type(dtype)
-    
         return global_params
         
     
