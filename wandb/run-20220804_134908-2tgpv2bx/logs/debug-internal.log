@@ -1,0 +1,185 @@
+2022-08-04 13:49:10,883 INFO    MainThread:32296 [internal.py:wandb_internal():90] W&B internal server running at pid: 32296, started at: 2022-08-04 13:49:10.883439
+2022-08-04 13:49:10,896 INFO    WriterThread:32296 [datastore.py:open_for_write():75] open: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\run-2tgpv2bx.wandb
+2022-08-04 13:49:10,902 DEBUG   SenderThread:32296 [sender.py:send():232] send: header
+2022-08-04 13:49:10,902 DEBUG   SenderThread:32296 [sender.py:send():232] send: run
+2022-08-04 13:49:11,236 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: check_version
+2022-08-04 13:49:11,244 INFO    SenderThread:32296 [dir_watcher.py:__init__():197] watching files in: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files
+2022-08-04 13:49:11,244 INFO    SenderThread:32296 [sender.py:_start_run_threads():811] run started: 2tgpv2bx with start time 1659592148
+2022-08-04 13:49:11,244 DEBUG   SenderThread:32296 [sender.py:send():232] send: summary
+2022-08-04 13:49:11,245 INFO    SenderThread:32296 [sender.py:_save_file():948] saving file wandb-summary.json with policy end
+2022-08-04 13:49:11,245 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: check_version
+2022-08-04 13:49:11,288 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: run_start
+2022-08-04 13:49:12,249 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_created():244] file/dir created: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\wandb-summary.json
+2022-08-04 13:49:15,253 DEBUG   HandlerThread:32296 [meta.py:__init__():35] meta init
+2022-08-04 13:49:15,254 DEBUG   HandlerThread:32296 [meta.py:__init__():49] meta init done
+2022-08-04 13:49:15,254 DEBUG   HandlerThread:32296 [meta.py:probe():209] probe
+2022-08-04 13:49:15,301 DEBUG   HandlerThread:32296 [meta.py:_setup_git():199] setup git
+2022-08-04 13:49:15,393 DEBUG   HandlerThread:32296 [meta.py:_setup_git():206] setup git done
+2022-08-04 13:49:15,393 DEBUG   HandlerThread:32296 [meta.py:_save_pip():53] save pip
+2022-08-04 13:49:15,397 DEBUG   HandlerThread:32296 [meta.py:_save_pip():67] save pip done
+2022-08-04 13:49:15,397 DEBUG   HandlerThread:32296 [meta.py:_save_conda():74] save conda
+2022-08-04 13:49:15,401 ERROR   HandlerThread:32296 [meta.py:_save_conda():83] Error saving conda packages
+Traceback (most recent call last):
+  File "c:\Users\HONGYI001\Anaconda3\envs\VFL\lib\site-packages\wandb\sdk\internal\meta.py", line 79, in _save_conda
+    subprocess.call(
+  File "c:\Users\HONGYI001\Anaconda3\envs\VFL\lib\subprocess.py", line 349, in call
+    with Popen(*popenargs, **kwargs) as p:
+  File "c:\Users\HONGYI001\Anaconda3\envs\VFL\lib\subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "c:\Users\HONGYI001\Anaconda3\envs\VFL\lib\subprocess.py", line 1420, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+FileNotFoundError: [WinError 2] The system cannot find the file specified
+2022-08-04 13:49:15,403 DEBUG   HandlerThread:32296 [meta.py:_save_conda():84] save conda done
+2022-08-04 13:49:15,404 DEBUG   HandlerThread:32296 [meta.py:probe():247] probe done
+2022-08-04 13:49:15,413 DEBUG   SenderThread:32296 [sender.py:send():232] send: files
+2022-08-04 13:49:15,413 INFO    SenderThread:32296 [sender.py:_save_file():948] saving file wandb-metadata.json with policy now
+2022-08-04 13:49:15,424 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: stop_status
+2022-08-04 13:49:15,424 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: stop_status
+2022-08-04 13:49:15,699 DEBUG   SenderThread:32296 [sender.py:send():232] send: telemetry
+2022-08-04 13:49:16,128 INFO    Thread-17 :32296 [upload_job.py:push():132] Uploaded file C:\Users\HONGYI~1\AppData\Local\Temp\tmpsl4_qkq2wandb\2bms2ly7-wandb-metadata.json
+2022-08-04 13:49:16,313 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_created():244] file/dir created: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\requirements.txt
+2022-08-04 13:49:16,313 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_created():244] file/dir created: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\conda-environment.yaml
+2022-08-04 13:49:16,314 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_created():244] file/dir created: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\wandb-metadata.json
+2022-08-04 13:49:16,314 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_created():244] file/dir created: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:18,340 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:20,350 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:22,366 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:24,379 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:26,391 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:28,402 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:30,414 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:30,715 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: stop_status
+2022-08-04 13:49:30,715 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: stop_status
+2022-08-04 13:49:32,434 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:34,452 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:36,472 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:38,487 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:40,504 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:41,352 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: partial_history
+2022-08-04 13:49:41,353 DEBUG   SenderThread:32296 [sender.py:send():232] send: history
+2022-08-04 13:49:41,353 DEBUG   SenderThread:32296 [sender.py:send():232] send: summary
+2022-08-04 13:49:41,354 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: partial_history
+2022-08-04 13:49:41,359 INFO    SenderThread:32296 [sender.py:_save_file():948] saving file wandb-summary.json with policy end
+2022-08-04 13:49:41,360 DEBUG   SenderThread:32296 [sender.py:send():232] send: history
+2022-08-04 13:49:41,360 DEBUG   SenderThread:32296 [sender.py:send():232] send: summary
+2022-08-04 13:49:41,366 INFO    SenderThread:32296 [sender.py:_save_file():948] saving file wandb-summary.json with policy end
+2022-08-04 13:49:41,375 DEBUG   SenderThread:32296 [sender.py:send():232] send: telemetry
+2022-08-04 13:49:41,376 DEBUG   SenderThread:32296 [sender.py:send():232] send: telemetry
+2022-08-04 13:49:41,516 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\wandb-summary.json
+2022-08-04 13:49:41,516 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\config.yaml
+2022-08-04 13:49:42,212 DEBUG   SenderThread:32296 [sender.py:send():232] send: exit
+2022-08-04 13:49:42,212 INFO    SenderThread:32296 [sender.py:send_exit():368] handling exit code: 1
+2022-08-04 13:49:42,212 INFO    SenderThread:32296 [sender.py:send_exit():370] handling runtime: 30
+2022-08-04 13:49:42,212 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:42,217 INFO    SenderThread:32296 [sender.py:_save_file():948] saving file wandb-summary.json with policy end
+2022-08-04 13:49:42,217 INFO    SenderThread:32296 [sender.py:send_exit():376] send defer
+2022-08-04 13:49:42,218 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:42,218 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:42,218 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 0
+2022-08-04 13:49:42,218 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:42,218 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 0
+2022-08-04 13:49:42,218 INFO    SenderThread:32296 [sender.py:transition_state():389] send defer: 1
+2022-08-04 13:49:42,219 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:42,219 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 1
+2022-08-04 13:49:42,290 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:42,290 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 1
+2022-08-04 13:49:42,290 INFO    SenderThread:32296 [sender.py:transition_state():389] send defer: 2
+2022-08-04 13:49:42,290 DEBUG   SenderThread:32296 [sender.py:send():232] send: stats
+2022-08-04 13:49:42,290 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:42,291 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 2
+2022-08-04 13:49:42,291 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:42,291 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 2
+2022-08-04 13:49:42,291 INFO    SenderThread:32296 [sender.py:transition_state():389] send defer: 3
+2022-08-04 13:49:42,291 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:42,291 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 3
+2022-08-04 13:49:42,292 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:42,292 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 3
+2022-08-04 13:49:42,292 INFO    SenderThread:32296 [sender.py:transition_state():389] send defer: 4
+2022-08-04 13:49:42,292 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:42,292 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 4
+2022-08-04 13:49:42,292 DEBUG   SenderThread:32296 [sender.py:send():232] send: summary
+2022-08-04 13:49:42,294 INFO    SenderThread:32296 [sender.py:_save_file():948] saving file wandb-summary.json with policy end
+2022-08-04 13:49:42,294 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:42,294 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 4
+2022-08-04 13:49:42,294 INFO    SenderThread:32296 [sender.py:transition_state():389] send defer: 5
+2022-08-04 13:49:42,294 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:42,294 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 5
+2022-08-04 13:49:42,294 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:42,294 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 5
+2022-08-04 13:49:42,335 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:42,526 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\wandb-summary.json
+2022-08-04 13:49:42,527 INFO    Thread-11 :32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:42,596 INFO    SenderThread:32296 [sender.py:transition_state():389] send defer: 6
+2022-08-04 13:49:42,596 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:42,596 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:42,596 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 6
+2022-08-04 13:49:42,597 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:42,597 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 6
+2022-08-04 13:49:42,597 INFO    SenderThread:32296 [dir_watcher.py:finish():312] shutting down directory watcher
+2022-08-04 13:49:42,712 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:43,533 INFO    SenderThread:32296 [dir_watcher.py:_on_file_modified():257] file/dir modified: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\config.yaml
+2022-08-04 13:49:43,535 INFO    SenderThread:32296 [dir_watcher.py:finish():342] scan: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files
+2022-08-04 13:49:43,535 INFO    SenderThread:32296 [dir_watcher.py:finish():356] scan save: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\conda-environment.yaml conda-environment.yaml
+2022-08-04 13:49:43,535 INFO    SenderThread:32296 [dir_watcher.py:finish():356] scan save: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\config.yaml config.yaml
+2022-08-04 13:49:43,535 INFO    SenderThread:32296 [dir_watcher.py:finish():356] scan save: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log output.log
+2022-08-04 13:49:43,535 INFO    SenderThread:32296 [dir_watcher.py:finish():356] scan save: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\requirements.txt requirements.txt
+2022-08-04 13:49:43,541 INFO    SenderThread:32296 [dir_watcher.py:finish():356] scan save: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\wandb-metadata.json wandb-metadata.json
+2022-08-04 13:49:43,541 INFO    SenderThread:32296 [dir_watcher.py:finish():356] scan save: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\wandb-summary.json wandb-summary.json
+2022-08-04 13:49:43,542 INFO    SenderThread:32296 [sender.py:transition_state():389] send defer: 7
+2022-08-04 13:49:43,542 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:43,545 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:43,545 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 7
+2022-08-04 13:49:43,545 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:43,545 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 7
+2022-08-04 13:49:43,545 INFO    SenderThread:32296 [file_pusher.py:finish():145] shutting down file pusher
+2022-08-04 13:49:43,657 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:43,657 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:43,768 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:43,768 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:43,879 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:43,880 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:43,987 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:43,988 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:44,102 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:44,102 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:44,203 INFO    Thread-19 :32296 [upload_job.py:push():132] Uploaded file c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\output.log
+2022-08-04 13:49:44,204 INFO    Thread-20 :32296 [upload_job.py:push():132] Uploaded file c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\requirements.txt
+2022-08-04 13:49:44,208 INFO    Thread-18 :32296 [upload_job.py:push():132] Uploaded file c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\config.yaml
+2022-08-04 13:49:44,216 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:44,217 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:44,227 INFO    Thread-21 :32296 [upload_job.py:push():132] Uploaded file c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\files\wandb-summary.json
+2022-08-04 13:49:44,325 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:44,326 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:44,435 INFO    Thread-10 :32296 [sender.py:transition_state():389] send defer: 8
+2022-08-04 13:49:44,436 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:44,437 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:44,437 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:44,438 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 8
+2022-08-04 13:49:44,439 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:44,439 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 8
+2022-08-04 13:49:44,551 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:45,037 INFO    SenderThread:32296 [sender.py:transition_state():389] send defer: 9
+2022-08-04 13:49:45,037 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:45,037 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:45,037 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 9
+2022-08-04 13:49:45,037 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:45,037 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 9
+2022-08-04 13:49:45,038 INFO    SenderThread:32296 [sender.py:transition_state():389] send defer: 10
+2022-08-04 13:49:45,038 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: defer
+2022-08-04 13:49:45,038 INFO    HandlerThread:32296 [handler.py:handle_request_defer():164] handle defer: 10
+2022-08-04 13:49:45,038 DEBUG   SenderThread:32296 [sender.py:send():232] send: final
+2022-08-04 13:49:45,038 DEBUG   SenderThread:32296 [sender.py:send():232] send: footer
+2022-08-04 13:49:45,038 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: defer
+2022-08-04 13:49:45,038 INFO    SenderThread:32296 [sender.py:send_request_defer():385] handle sender defer: 10
+2022-08-04 13:49:45,152 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: poll_exit
+2022-08-04 13:49:45,153 DEBUG   SenderThread:32296 [sender.py:send_request():246] send_request: poll_exit
+2022-08-04 13:49:45,153 INFO    SenderThread:32296 [file_pusher.py:join():150] waiting for file pusher
+2022-08-04 13:49:45,844 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: sampled_history
+2022-08-04 13:49:45,845 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: get_summary
+2022-08-04 13:49:45,846 DEBUG   HandlerThread:32296 [handler.py:handle_request():141] handle_request: shutdown
+2022-08-04 13:49:45,846 INFO    HandlerThread:32296 [handler.py:finish():806] shutting down handler
+2022-08-04 13:49:46,050 INFO    WriterThread:32296 [datastore.py:close():279] close: c:\Users\HONGYI001\Desktop\Metanet-Motivation\wandb\run-20220804_134908-2tgpv2bx\run-2tgpv2bx.wandb
+2022-08-04 13:49:46,748 INFO    SenderThread:32296 [sender.py:finish():1110] shutting down sender
+2022-08-04 13:49:46,748 INFO    SenderThread:32296 [file_pusher.py:finish():145] shutting down file pusher
+2022-08-04 13:49:46,748 INFO    SenderThread:32296 [file_pusher.py:join():150] waiting for file pusher
+2022-08-04 13:49:46,756 INFO    MainThread:32296 [internal.py:handle_exit():80] Internal process exited

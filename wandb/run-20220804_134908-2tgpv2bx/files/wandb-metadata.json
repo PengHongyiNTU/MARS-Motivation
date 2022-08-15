@@ -1,0 +1,23 @@
+{
+    "os": "Windows-10-10.0.22000-SP0",
+    "python": "3.9.12",
+    "heartbeatAt": "2022-08-04T05:49:15.254381",
+    "startedAt": "2022-08-04T05:49:08.167574",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 2060 SUPER",
+    "gpu_count": 1,
+    "cpu_count": 16,
+    "cuda": null,
+    "args": null,
+    "state": "running",
+    "program": "<python with no main file>",
+    "git": {
+        "remote": "https://github.com/PengHongyiNTU/MARS-Motivation.git",
+        "commit": "39d3fa76449454124d8f9c5e18d959bdddaff01f"
+    },
+    "email": "HONGYI001@e.ntu.edu.sg",
+    "root": "C:/Users/HONGYI001/Desktop/Metanet-Motivation",
+    "host": "ALI-R21",
+    "username": "HONGYI001",
+    "executable": "c:\\Users\\HONGYI001\\Anaconda3\\envs\\VFL\\python.exe"
+}

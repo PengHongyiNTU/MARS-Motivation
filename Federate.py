@@ -1,46 +1,57 @@
 import yaml # for reading the config fil
 import wandb
-from Model import ConvNet2, ConvNet5
+from Model import ConvNet2, ConvNet3, ConvNet4, ConvNet5, ConvNet5
+from ResNet import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
 import Data
 import Split
 import Trainer
+
+
 class Simulator:
-    def __init__(self, cfg_path, project_name):
-        self.project_name = project_name 
+    def __init__(self, cfg_path):
         self.cfg = yaml.safe_load(open(cfg_path))
-        self.init_wandb()
-        
-    
+        self.project_name = self.cfg['project_name']
+        if self.cfg['use_wandb'] == True:
+            wandb.login()
+            self.logger = wandb.init(project=self.project_name, config=self.cfg)
+        else:
+            self.logger = None
+            
     def run(self):
         model = self.make_model()
         trainset, testset, client_data_idx_map = self.make_data()
-        with wandb.init(project=self.project_name, config=self.cfg):
-            trainer = Trainer.LocalTrainer(
+        trainer = Trainer.LocalTrainer(
                 model, client_data_idx_map, trainset, testset, 
-                self.cfg)
-            trainer.train()
-            trainer.evaluate()                   
-    
-    def init_wandb(self):
-        wandb.login()
-        
+                self.cfg, self.logger)
+        trainer.train()
+        trainer.evaluate()                   
+           
     
     def make_model(self):
         dataset_name = self.cfg['dataset']
         model = self.cfg['model']
+        h = 32
+        w = 32
+        hidden = 2048
+        class_num = 10
         if dataset_name == "MNIST":
             in_channels = 1
-            h = 28
-            w = 28
-            hidden=1024,
-            class_num = 10
-            if model == "ConvNet2":
-                model = ConvNet2(in_channels, h, w, class_num=class_num)
-            elif model == "ConvNet5":
-                model = ConvNet5(in_channels, h, w, classs_num=class_num)
-            else:
-                raise ValueError("model on MNIST must be ConvNet2 or ConvNet5")            
-        return model
+        elif dataset_name == "CIFAR10":
+            in_channels = 3
+        if model == "ConvNet2":
+            return ConvNet2(in_channels, h, w, hidden, class_num)
+        elif model == "ConvNet3":
+            return ConvNet3(in_channels, h, w, hidden, class_num)
+        elif model == "ConvNet4":
+            return ConvNet4(in_channels, h, w, hidden, class_num)
+        elif model == "ConvNet5":
+            return ConvNet5(in_channels, h, w, hidden, class_num)
+        elif model == "ResNet18":
+            return ConvNet5(in_channels, h, w, hidden, class_num)
+            
+            
+            
+             
     
     def make_data(self, mode=''):
         dataset_name = self.cfg['dataset']

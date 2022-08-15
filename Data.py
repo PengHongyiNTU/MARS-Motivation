@@ -1,6 +1,6 @@
 from matplotlib.pyplot import axes
 from torchvision import transforms
-from torchvision.datasets import MNIST, CIFAR10
+from torchvision.datasets import MNIST, CIFAR10, CIFAR100
 import torch
 from Noise import uniform_mix_C, flip_labels_C, flip_labels_C_two
 from torch.utils.data import Dataset
@@ -10,13 +10,14 @@ from torchvision import transforms
 
 
 def load_centralized_dataset(name='MNIST', validation_split=0, download=False):
+    # For Compatibility we also resize MNIST dataset to 28x28
     if name == 'MNIST':
         train_dataset = MNIST(root='./data', train=True, 
                               download=download, transform=transforms.Compose(
-    [transforms.ToTensor()]))
+    [transforms.ToTensor(), transforms.Resize(32, 32)]))
         test_dataset = MNIST(root='./data', train=False, 
                              download=download,transform=transforms.Compose(
-    [transforms.ToTensor()]))
+    [transforms.ToTensor(), transforms.Resize(32, 32)]))
     if name == "CIFAR10":
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
         # use torch vision to load CIFAR10  
@@ -24,8 +25,16 @@ def load_centralized_dataset(name='MNIST', validation_split=0, download=False):
                                 transform=transforms)
         test_dataset = CIFAR10(root='./data', train=False, download=download,
                                transforms=transforms)
-    
+    if name == "CIFAR100":
+        transform == transform.Compose([
+            transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        ])
+        train_dataset = CIFAR100(root='./data', train=True, download=download,
+                                 transform=transform)
+        test_dataset = CIFAR100(root='./data', train=False, download=download,
+                                transform=transform)
     if validation_split > 0:
+        # Valiadation set can be used in meta-traning
         if isinstance(validation_split, float):
             val_size = int(validation_split* len(train_dataset))
         else:

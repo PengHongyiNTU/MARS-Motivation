@@ -1,4 +1,5 @@
-saving_dir: 'experiments_1'
+project_name: 'experiments_1'
+use_wandb: False
 dataset: 'MNIST'
 split: 'iid'
 alpha: 0.5
@@ -8,6 +9,7 @@ corruption_prob: 0.5
 algorithm: FedAvg
 model: 'ConvNet2'
 use_gpu: true
+gpu_list: [0]
 epoch: 10
 batch_size: 128
 test_batch_size: 1024

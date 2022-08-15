@@ -241,11 +241,10 @@ if __name__ == "__main__":
     conv3 = conv3.cuda()
     conv4 = conv4.cuda()
     conv5 = conv5.cuda()
-
     summary(conv2, (1, 3, 32, 32))
     summary(conv3, (1, 3, 32, 32))
     summary(conv4, (1, 3,  32, 32))
     summary(conv5, (1, 3, 32, 32))
-    
+ 
     
 
