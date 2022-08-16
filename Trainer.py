@@ -14,7 +14,7 @@ def random_selection(client_ids, num_selected):
     return np.random.choice(client_ids, num_selected, replace=False)
 
 class LocalTrainer:
-    def __init__(self, model, clients_dataidx_map, trainset, testset, cfg):
+    def __init__(self, model, clients_dataidx_map, trainset, testset, cfg, logger):
         self.global_model = model
         self.clients_dataidx_map = clients_dataidx_map
         self.trainset = trainset
