@@ -12,27 +12,27 @@ from torchvision import transforms
 def load_centralized_dataset(name='MNIST', validation_split=0, download=False):
     # For Compatibility we also resize MNIST dataset to 28x28
     if name == 'MNIST':
+        mnist_transforms = transforms.Compose([
+            transforms.ToTensor(), transforms.Resize((32, 32))])
         train_dataset = MNIST(root='./data', train=True, 
-                              download=download, transform=transforms.Compose(
-    [transforms.ToTensor(), transforms.Resize(32, 32)]))
+                              download=download, transform=mnist_transforms)
         test_dataset = MNIST(root='./data', train=False, 
-                             download=download,transform=transforms.Compose(
-    [transforms.ToTensor(), transforms.Resize(32, 32)]))
+                             download=download,transform=mnist_transforms)
     if name == "CIFAR10":
-        transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        cifar_transforms = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
         # use torch vision to load CIFAR10  
         train_dataset = CIFAR10(root='./data', train=True, download=download, 
-                                transform=transforms)
+                                transform=cifar_transforms)
         test_dataset = CIFAR10(root='./data', train=False, download=download,
-                               transforms=transforms)
+                               transform=cifar_transforms)
     if name == "CIFAR100":
-        transform == transform.Compose([
+        cifar_transforms = transforms.Compose([
             transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
         ])
         train_dataset = CIFAR100(root='./data', train=True, download=download,
-                                 transform=transform)
+                                 transform=cifar_transforms)
         test_dataset = CIFAR100(root='./data', train=False, download=download,
-                                transform=transform)
+                                transform=cifar_transforms)
     if validation_split > 0:
         # Valiadation set can be used in meta-traning
         if isinstance(validation_split, float):
@@ -47,22 +47,22 @@ def load_centralized_dataset(name='MNIST', validation_split=0, download=False):
 
 
 class ImbalancedNoisyDataWrapper(Dataset):
-    def __init__(self, base_dataset, corruption_prob, imblanced_ratio, num_classes, seed=1, noise_type='uniform'):
+    def __init__(self, base_dataset, corruption_prob, imbalanced_ratio, num_classes, seed=1, noise_type='uniform'):
         self.base_dataset = base_dataset
         self.dataset = self.base_dataset
         self.corruption_prob = corruption_prob
-        self.imblanced_ratio = imblanced_ratio
+        self.imbalanced_ratio = imbalanced_ratio
         self.num_classes = num_classes
         self.seed = seed
         self.noise_type = noise_type
-        self.portion_per_class = np.exp(-self.imblanced_ratio * np.linspace(0, 1, num=self.num_classes))
+        self.portion_per_class = np.exp(-self.imbalanced_ratio * np.linspace(0, 1, num=self.num_classes))
         self.C = np.eye(num_classes)
         # random generator for reproducibility
         np.random.seed(self.seed)
         torch.manual_seed(self.seed)
 
 
-        if self.imblanced_ratio > 0:
+        if self.imbalanced_ratio > 0:
             self._downsample_datasets()
         self.correct_labels = np.array([labels for _, labels in self.dataset])
         self.flipped_labels = self.correct_labels.copy()
@@ -139,22 +139,26 @@ class ImbalancedNoisyDataWrapper(Dataset):
     
 
 if __name__ == '__main__':
+    _, _  = load_centralized_dataset(
+        name='CIFAR10', validation_split=0, download=True)
+    _, _ = load_centralized_dataset(
+        name='CIFAR100', validation_split=0, download=True)
     raw_dataset, _ = load_centralized_dataset(
-        name='MNIST', validation_split=0, download=False)
+        name='MNIST', validation_split=0, download=True)
     balanced_dataset = ImbalancedNoisyDataWrapper(
         base_dataset=raw_dataset,
         corruption_prob=0,
-        imblanced_ratio=0,
+        imbalanced_ratio=0,
         num_classes=10)
     imbalanced_dataset = ImbalancedNoisyDataWrapper(
         base_dataset=raw_dataset,
         corruption_prob=0,
-        imblanced_ratio=3,
+        imbalanced_ratio=3,
         num_classes=10)
     flipped_imnbalanced_dataset = ImbalancedNoisyDataWrapper(
         base_dataset=raw_dataset,
         corruption_prob=0.3,
-        imblanced_ratio=3,
+        imbalanced_ratio=3,
         num_classes=10)
     print(balanced_dataset)
     print(imbalanced_dataset)
@@ -173,6 +177,7 @@ if __name__ == '__main__':
     axes[2].hist(flipped_imnbalanced_labels, bins=10)
     axes[2].set_title('Flipped Imbalanced')
     plt.savefig('DataDistribution.png')
+    plt.show()
     
     
         
