@@ -5,26 +5,30 @@ from ResNet import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
 import Data
 import Split
 import Trainer
-
+import torch
+import numpy as np
 
 class Simulator:
     def __init__(self, cfg_path):
         self.cfg = yaml.safe_load(open(cfg_path))
         self.project_name = self.cfg['project_name']
-        if self.cfg['use_wandb'] == True:
-            wandb.login()
-            self.logger = wandb.init(project=self.project_name, config=self.cfg)
-        else:
-            self.logger = None
+        wandb.login()
+        # Reproducibility
+        torch.manual_seed(self.cfg['seed'])
+        np.random.seed(self.cfg['seed'])
             
     def run(self):
         model = self.make_model()
         trainset, testset, client_data_idx_map = self.make_data()
-        trainer = Trainer.LocalTrainer(
+        if self.cfg['multigpu'] == True:
+            trainer = Trainer.MultiGPUTrainer(model, trainset, testset, client_data_idx_map, self.cfg)
+        else:
+            trainer = Trainer.LocalTrainer(
                 model, client_data_idx_map, trainset, testset, 
-                self.cfg, self.logger)
-        trainer.train()
-        trainer.evaluate()                   
+                self.cfg)
+        with wandb.init(project=self.project_name, config=self.cfg):
+            trainer.train()
+            trainer.evaluate()                   
            
     
     def make_model(self):
@@ -47,13 +51,21 @@ class Simulator:
         elif model == "ConvNet5":
             return ConvNet5(in_channels, h, w, hidden, class_num)
         elif model == "ResNet18":
-            return ConvNet5(in_channels, h, w, hidden, class_num)
+            return ResNet18()
+        elif model == "ResNet34":
+            return ResNet34()
+        elif model == "ResNet50":
+            return ResNet50()
+        elif model == "ResNet101":
+            return ResNet101()
+        elif model == "ResNet152":
+            return ResNet152()
             
             
             
              
     
-    def make_data(self, mode=''):
+    def make_data(self):
         dataset_name = self.cfg['dataset']
         trainset, testset = Data.load_centralized_dataset(
             dataset_name, validation_split=0, download=False)
@@ -67,6 +79,14 @@ class Simulator:
         elif self.cfg['split'] == "niid":
             alpha = self.cfg['alpha']
             splitter = Split.LDASplitter(client_num, alpha)
+        elif self.cfg['split'] == 'local noise':
+            noisy_client_id = client_num - 1
+            splitter = Split.ClientWiseNoisySplitter(
+                client_num, noisy_client_id)
+        elif self.cfg['split'] == 'local imbalance':
+            imbalanced_client_id = client_num -1
+            splitter = Split.ClientWiseImbalancedSplitter(
+                client_num, imbalanced_client_id)  
         client_data_idx_map = splitter(trainset)
         return trainset, testset, client_data_idx_map
 

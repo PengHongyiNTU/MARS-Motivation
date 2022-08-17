@@ -40,7 +40,7 @@ def layerwise_diff(params1, params2):
     with torch.no_grad():
         for param_name in params1.keys():
             diff = torch.norm(params1[param_name].cpu().float() - params2[param_name].cpu().float())
-            diff_table[param_name] = diff.detach().numpy()
+            diff_table[param_name] = diff.detach().numpy().item()
         return diff_table
 
         

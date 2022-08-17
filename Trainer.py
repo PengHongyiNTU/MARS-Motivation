@@ -13,8 +13,8 @@ from Utils import layerwise_diff
 def random_selection(client_ids, num_selected):
     return np.random.choice(client_ids, num_selected, replace=False)
 
-class LocalTrainer:
-    def __init__(self, model, clients_dataidx_map, trainset, testset, cfg, logger):
+class LocalSingleGPUTrainer:
+    def __init__(self, cfg, model, clients_dataidx_map, trainset, testset):
         self.global_model = model
         self.clients_dataidx_map = clients_dataidx_map
         self.trainset = trainset
@@ -25,7 +25,7 @@ class LocalTrainer:
             self.device = torch.device(self.gpu)
         else:
             self.device = torch.device('cpu')
-        saving_dir = self.cfg['saving_dir']
+        saving_dir = self.cfg['project_name']
         # check contains three directories: local, global, and logs
         if not os.path.exists(saving_dir):
             os.makedirs(saving_dir)
@@ -141,7 +141,7 @@ class LocalTrainer:
             wandb.log(logging_msg)
             for id, params in params_dict.items():
                 row = list(layerwise_diff(params, global_model_params).values())
-                row = [e, id] + row
+                row = [e, str(id)] + row
                 self.table.add_data(*row)
             wandb.log({'layerwise_diff': self.table})  
             global_params = FedAvg.aggregate(params_dict)
@@ -151,7 +151,6 @@ class LocalTrainer:
                 
 if __name__ == "__main__":
     import yaml
-    from Trainer import LocalTrainer
     from Split import IIDSplitter
     from Data import load_centralized_dataset
     from Model import ConvNet2
@@ -159,20 +158,20 @@ if __name__ == "__main__":
     from Data import ImbalancedNoisyDataWrapper
     wandb.login()
     cfg = yaml.safe_load(open('sample.yaml'))
-    model = ConvNet2(in_channels=1, h=28, w=28,
+    model = ConvNet2(in_channels=1, h=32, w=32,
                  hidden=2048, class_num=10,  dropout=.0)
     dataset_name = cfg['dataset']
     trainset, testset = load_centralized_dataset(
     dataset_name, validation_split=0, download=False)
     trainset = ImbalancedNoisyDataWrapper(
         trainset, corruption_prob=cfg['corruption_prob'],
-        imblanced_ratio=0, num_classes=10, seed=1, noise_type='uniform')
+        imbalanced_ratio=0, num_classes=10, seed=1, noise_type='uniform')
     client_num = 10
     iid_splliter = IIDSplitter(client_num)
     clients_dataidx_map = iid_splliter(trainset)
     with wandb.init(project='debug', config=cfg):
-        trainer = LocalTrainer(model, clients_dataidx_map,
-                           trainset, testset, cfg)
+        trainer = LocalSingleGPUTrainer(cfg, model, clients_dataidx_map,
+                           trainset, testset)
         trainer.train()
         trainer.evaluate()
            
