@@ -2,6 +2,8 @@ import torch
 import pynvml
 import os
 import numpy as np
+from torch_cka import CKA
+
 
 def get_best_gpu():
     """Return gpu (:class:`torch.device`) with largest free memory."""
@@ -15,7 +17,7 @@ def get_best_gpu():
         ]
     else:
         cuda_devices = range(deviceCount)
-    
+
     assert max(cuda_devices) < deviceCount
     deviceMemory = []
     for i in cuda_devices:
@@ -32,18 +34,22 @@ def accuracy(pred, target):
     correct = pred.eq(target).sum().item()
     total = len(pred)
     return correct / total
-    
+
 
 def layerwise_diff(params1, params2):
     """Compute the difference between two sets of parameters."""
     diff_table = dict.fromkeys(params1.keys())
     with torch.no_grad():
         for param_name in params1.keys():
-            diff = torch.norm(params1[param_name].cpu().float() - params2[param_name].cpu().float())
+            diff = torch.norm(params1[param_name].cpu(
+            ).float() - params2[param_name].cpu().float())
             diff_table[param_name] = diff.detach().numpy().item()
         return diff_table
 
+def compute_cka_similarity(model1, model2, loader, device):
+    cka = CKA(model1, model2, device)
+    cka.compare(loader)
+    result = cka.export()
+    return result  
         
 
-if __name__ == "__main__":
-    print(get_best_gpu())

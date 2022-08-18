@@ -50,7 +50,7 @@ if __name__ == "__main__":
     from Utils import get_best_gpu
     device = get_best_gpu()
     local_train(
-        0, model, loader, optimizer, criterion, local_epoch=10, device=device, log_freq=10
+        0, model, loader, optimizer, criterion, local_epoch=10, device=device
     )
     params_dict = {
         0: model.state_dict(),

@@ -5,17 +5,17 @@ split: 'iid'
 alpha: 0.5
 num_clients: 10
 imbalanced_ratio: 5
-corruption_prob: 0.5
+corruption_prob: 0
 algorithm: 'FedAvg'
 model: 'ConvNet2'
 use_gpu: True
 multigpu: False
 epoch: 10
-batch_size: 64
-test_batch_size: 512
+batch_size: 128
+test_batch_size: 1024
 lr: 0.001
-local_round: 5
-num_clients_per_round: 5
+local_round: 3
+num_clients_per_round: 3
 
 
 

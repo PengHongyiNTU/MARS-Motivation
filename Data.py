@@ -112,7 +112,7 @@ class ImbalancedNoisyDataWrapper(Dataset):
             #print(self.portion_per_class[i])
             num_samples_to_select = int(num_samples_per_class * self.portion_per_class[i])
             #print(class_idx_map[key])
-            print(num_samples_to_select)
+            #print(num_samples_to_select)
             selected_idx = np.random.choice(class_idx_map[key], num_samples_to_select, replace=False)
             selected_idxs.append(selected_idx)
         selected_idxs = np.concatenate(selected_idxs)
@@ -139,10 +139,13 @@ class ImbalancedNoisyDataWrapper(Dataset):
     
 
 if __name__ == '__main__':
+    """
     _, _  = load_centralized_dataset(
         name='CIFAR10', validation_split=0, download=True)
+
     _, _ = load_centralized_dataset(
         name='CIFAR100', validation_split=0, download=True)
+    """
     raw_dataset, _ = load_centralized_dataset(
         name='MNIST', validation_split=0, download=True)
     balanced_dataset = ImbalancedNoisyDataWrapper(
@@ -177,7 +180,7 @@ if __name__ == '__main__':
     axes[2].hist(flipped_imnbalanced_labels, bins=10)
     axes[2].set_title('Flipped Imbalanced')
     plt.savefig('DataDistribution.png')
-    plt.show()
+    # plt.show()
     
     
         
