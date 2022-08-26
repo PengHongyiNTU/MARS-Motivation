@@ -36,7 +36,7 @@ def accuracy(pred, target):
     return correct / total
 
 
-def layerwise_diff(params1, params2):
+def compute_layerwise_diff(params1, params2):
     """Compute the difference between two sets of parameters."""
     diff_table = dict.fromkeys(params1.keys())
     with torch.no_grad():
@@ -47,9 +47,10 @@ def layerwise_diff(params1, params2):
         return diff_table
 
 def compute_cka_similarity(model1, model2, loader, device):
-    cka = CKA(model1, model2, device)
-    cka.compare(loader)
-    result = cka.export()
-    return result  
+    with torch.no_grad():
+        cka = CKA(model1, model2, device)
+        cka.compare(loader, loader)
+        result = cka.export()
+        return result  
         
 
