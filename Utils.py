@@ -38,6 +38,7 @@ def accuracy(pred, target):
 
 def compute_layerwise_diff(params1, params2):
     """Compute the difference between two sets of parameters."""
+    assert params1.keys() == params2.keys()
     diff_table = dict.fromkeys(params1.keys())
     with torch.no_grad():
         for param_name in params1.keys():

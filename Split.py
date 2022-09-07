@@ -89,7 +89,7 @@ class ClientWiseNoisySplitter:
     def __init__(self, client_num, noisy_client_ids):
         self.client_num = client_num
         self.noisy_client_ids = noisy_client_ids
-        if len(self.noisy_client_ids) > self.client_num or max(self.noisy_client_ids) > self.client_num-1:
+        if len(self.noisy_client_ids) >= self.client_num or max(self.noisy_client_ids) > self.client_num-1:
             raise ValueError('Noisy client ids should be less than client num.') 
         self.clients_dataidx_map = dict.fromkeys(list(range(client_num)))
         
