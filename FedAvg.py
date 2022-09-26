@@ -2,8 +2,10 @@ from tqdm import tqdm
 import torch
 from Utils import compute_layerwise_diff
 import copy 
-def local_train(id, local_model, global_model_params, local_loader, optimizer, 
-                    criterion, local_epoch, device):
+def local_train(id, local_model, global_model_params, 
+                local_loader, 
+                optimizer, 
+                criterion, local_epoch, device):
     local_model.load_state_dict(global_model_params)
     local_model.to(device)
     local_model.train()
@@ -20,21 +22,25 @@ def local_train(id, local_model, global_model_params, local_loader, optimizer,
             optimizer.step()
             running_loss += loss.item()
             # running_loss = running_loss / len(local_loader)
-            pbar.set_postfix_str(f'Epoch: {e} Loss: {running_loss:.3f} ')
+            pbar.set_postfix_str(f'Local Round: {e+1} Loss: {running_loss:.3f} ')
     local_model.cpu()
     local_params = copy.deepcopy(local_model.state_dict())
     return local_params 
+
+    
         
     
 def aggregate(params_dict):
+    params_list = list(params_dict.values())
     with torch.no_grad():
         # Average the parameters in params_dict
-        num_clients = len(params_dict)
+        num_clients = len(params_list)
         global_params = {}
-        for key in params_dict[0].keys():
-            weights = torch.stack([params_dict[i][key] for i in range(num_clients)])
+        for key in params_list[0].keys():
+            weights = torch.stack([params_list[i][key] for i in range(num_clients)])
             avg_weights = torch.sum(weights, dim=0) / num_clients
             global_params[key] = avg_weights
+            
         return global_params
         
     

@@ -1,26 +1,27 @@
 project_name: 'experiments_1'
-dataset: 'MNIST'
-seed: 0
-split: 'iid'
+dataset: 'CIFAR10'
+seed: 1
+split: 'iid' #niid, noisy_clients, imbalanced_clients
+num_noisy_clients: 0
+num_imabalanced_clients: 0
 alpha: 0.5
-num_clients: 2
+num_clients: 10
 imbalanced_ratio: 0
 corruption_prob: 0
 corruption_type: 'uniform'
 algorithm: 'FedAvg'
-model: 'ConvNet2'
-optimizer: 'SGD' # Adam
+model: 'ResNet18'
+optimizer: 'SGD' 
 use_gpu: true
-epoch: 20
-batch_size: 512
-test_batch_size: 1024
-lr: 0.01
+epoch: 2
+batch_size: 1024
+test_batch_size: 2048
+lr: 0.001
 weight_decay: 0.004
 local_round: 5
-num_clients_per_round: 2
+num_clients_per_round: 3
+save: False
 watch_client: 'all'
-l2_diff: True
-cka: True
 
 
 

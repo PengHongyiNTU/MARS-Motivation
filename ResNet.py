@@ -135,5 +135,6 @@ if __name__ == '__main__':
     net = ResNet18(input_channels=1).cuda()
     from torchsummary import summary
     summary(net, (1, 32, 32))
-    print(net.state_dict().keys())
-   
+    print([net.state_dict().keys()])
+    # print([key for key in net.state_dict().keys() if 'conv' in key])
+    

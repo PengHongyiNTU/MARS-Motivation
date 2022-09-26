@@ -4,6 +4,16 @@ import os
 import numpy as np
 from torch_cka import CKA
 
+def get_model_size(model):
+    param_size = 0
+    for param in model.parameters():
+        param_size += param.nelement()*param.element_size()
+    buffer_size = 0
+    for buffer in model.buffers():
+        buffer_size += buffer.nelement() * buffer.element_size()
+    size_all_mb = (param_size + buffer_size) / 1024**2
+    return size_all_mb
+        
 
 def get_best_gpu():
     """Return gpu (:class:`torch.device`) with largest free memory."""
@@ -47,11 +57,17 @@ def compute_layerwise_diff(params1, params2):
             diff_table[param_name] = diff.detach().numpy().item()
         return diff_table
 
-def compute_cka_similarity(model1, model2, loader, device):
+def compute_cka_similarity(model1, model2, loader, device, layer2compare=None):
     with torch.no_grad():
-        cka = CKA(model1, model2, device)
+        cka = CKA(model1, model2, 
+                  model1_name='global',
+                  model2_name='local',
+                  model1_layers=layer2compare,
+                  model2_layers=layer2compare,
+                  device=device)
         cka.compare(loader, loader)
         result = cka.export()
         return result  
-        
+    
+
 

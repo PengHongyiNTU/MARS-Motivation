@@ -6,11 +6,13 @@ from Noise import uniform_mix_C, flip_labels_C, flip_labels_C_two
 from torch.utils.data import Dataset
 import numpy as np
 from torchvision import transforms
+from TinyImageNet import TinyImageNet
 
 
 
 def load_centralized_dataset(name='MNIST', validation_split=0, download=False):
     # For Compatibility we also resize MNIST dataset to 28x28
+    print(f'Loading {name} dataset')
     if name == 'MNIST':
         mnist_transforms = transforms.Compose([
             transforms.ToTensor(), transforms.Resize((32, 32))])
@@ -33,6 +35,16 @@ def load_centralized_dataset(name='MNIST', validation_split=0, download=False):
                                  transform=cifar_transforms)
         test_dataset = CIFAR100(root='./data', train=False, download=download,
                                 transform=cifar_transforms)
+    if name == "TinyImageNet":
+        tim_transforms = transforms.Compose([
+            transforms.ToTensor(), transforms.Normalize(mean=(0.485, 0.456, 0.406), 
+                                                        std=(0.229, 0.224, 0.225)),
+            transforms.Resize((32, 32))
+        ])
+        train_dataset = TinyImageNet(root='./data/tiny-imagenet-200/', train=True, transform=tim_transforms)
+        test_dataset = TinyImageNet(root='./data/tiny-imagenet-200/', train=False, transform=tim_transforms)
+        
+        
     if validation_split > 0:
         # Valiadation set can be used in meta-traning
         if isinstance(validation_split, float):
@@ -91,10 +103,10 @@ class ImbalancedNoisyDataWrapper(Dataset):
                 self.flipped_labels[i] = y_corrupted
                 
                 
-    def get_restored_idxs(self, num_samples=1000):
+    def get_restored_idxs(self, num_samples=1024):
         # number of fi;pped index
         idx = np.where(self.is_flipped == 1)[0]
-        num_samples = max(num_samples, len(idx))
+        num_samples = min(num_samples, len(idx))
         seleceted_idxs = np.random.choice(idx, num_samples, replace=False)
         return seleceted_idxs
     
@@ -148,6 +160,9 @@ if __name__ == '__main__':
     """
     raw_dataset, _ = load_centralized_dataset(
         name='MNIST', validation_split=0, download=True)
+    # raw_dataset, _ = load_centralized_dataset(
+        # name='TinyImageNet', validation_split=0)
+    # print(np.unique([y for x, y in raw_dataset]))
     balanced_dataset = ImbalancedNoisyDataWrapper(
         base_dataset=raw_dataset,
         corruption_prob=0,
@@ -181,6 +196,7 @@ if __name__ == '__main__':
     axes[2].set_title('Flipped Imbalanced')
     plt.savefig('DataDistribution.png')
     # plt.show()
+
     
     
         

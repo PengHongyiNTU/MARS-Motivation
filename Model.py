@@ -245,6 +245,9 @@ if __name__ == "__main__":
     summary(conv3, (1, 3, 32, 32))
     summary(conv4, (1, 3,  32, 32))
     summary(conv5, (1, 3, 32, 32))
+    
+    pat = re.complile('gn|bn')
+   
  
     
 
