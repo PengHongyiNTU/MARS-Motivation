@@ -35,11 +35,19 @@ class Simulator:
         h = 32
         w = 32
         hidden = 2048
-        class_num = 10
         if dataset_name == "MNIST":
             in_channels = 1
-        elif dataset_name == "CIFAR10" or dataset_name == "CIFAR100" or dataset_name == "TinyImageNet":
+            class_num = 10
+        elif dataset_name == "CIFAR10":
             in_channels = 3
+            class_num = 10
+        elif dataset_name == "CIFAR100":
+            in_channels = 3
+            class_num = 100
+        elif dataset_name == "TinyImageNet":
+            in_channels = 3
+            class_num = 200
+        
         if model == "ConvNet2":
             return ConvNet2(in_channels, h, w, hidden, class_num)
         elif model == "ConvNet3":
@@ -49,15 +57,15 @@ class Simulator:
         elif model == "ConvNet5":
             return ConvNet5(in_channels, h, w, hidden, class_num)
         elif model == "ResNet18":
-            return ResNet18(in_channels)
+            return ResNet18(in_channels, class_num)
         elif model == "ResNet34":
-            return ResNet34(in_channels)
+            return ResNet34(in_channels, class_num)
         elif model == "ResNet50":
-            return ResNet50(in_channels)
+            return ResNet50(in_channels, class_num)
         elif model == "ResNet101":
-            return ResNet101(in_channels)
+            return ResNet101(in_channels, class_num)
         elif model == "ResNet152":
-            return ResNet152(in_channels)
+            return ResNet152(in_channels, class_num)
             
             
             
@@ -84,12 +92,13 @@ class Simulator:
             alpha = self.cfg['alpha']
             splitter = Split.LDASplitter(client_num, alpha)
         elif self.cfg['split'] == 'noisy_clients':
+            assert(self.cfg['num_noisy_clients'])
             num_noisy_clients = self.cfg['num_noisy_clients']
             noisy_clients_ids = list(range(client_num))[:-num_noisy_clients]
-            # noisy_client_id = client_num - 1
             splitter = Split.ClientWiseNoisySplitter(
                 client_num, noisy_clients_ids)
         elif self.cfg['split'] == 'imbalanced_clients':
+            assert(self.cfg['num_imbalanced_clients'])
             num_imbalanced_clients = self.cfg['num_imbalanced_clients']
             imblanced_clients_ids = list(range(client_num))[:-num_imbalanced_clients]
             splitter = Split.ClientWiseImbalancedSplitter(

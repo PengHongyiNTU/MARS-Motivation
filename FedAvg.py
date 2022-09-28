@@ -1,6 +1,6 @@
 from tqdm import tqdm
 import torch
-from Utils import compute_layerwise_diff
+from torchmetrics.functional import accuracy
 import copy 
 def local_train(id, local_model, global_model_params, 
                 local_loader, 
@@ -21,8 +21,12 @@ def local_train(id, local_model, global_model_params,
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
-            # running_loss = running_loss / len(local_loader)
-            pbar.set_postfix_str(f'Local Round: {e+1} Loss: {running_loss:.3f} ')
+            # calculate the running accuracy
+            with torch.no_grad():
+                pred = output.max(1, keepdim=True)[1]
+                acc = (pred.eq(target.view_as(pred)).sum().item() * 100.)/len(data)
+           
+            pbar.set_postfix_str(f'Local Round: {e+1} | Loss: {running_loss:.3f} | Acc: {acc:.3f}')
     local_model.cpu()
     local_params = copy.deepcopy(local_model.state_dict())
     return local_params 

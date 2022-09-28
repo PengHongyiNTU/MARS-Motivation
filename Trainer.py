@@ -12,6 +12,7 @@ import os
 from Utils import get_model_size
 import copy
 import pandas as pd
+from datetime import datetime
 
 def random_selection(client_ids, num_selected):
     return np.random.choice(client_ids, num_selected, replace=False)
@@ -26,16 +27,21 @@ class LocalSingleGPUTrainer:
         self.trainset = trainset
         self.testset = testset
         self.cfg = cfg
-        if self.cfg['use_gpu'] == True:
+        if self.cfg['use_gpu'] == "best":
             self.gpu = get_best_gpu()
             self.device = torch.device(self.gpu)
-        else:
-            self.device = torch.device('cpu')
+        elif isinstance(self.cfg['use_gpu'], int):
+            gpu_id = self.cfg['use_gpu']
+            cuda = f"cuda:{gpu_id}"
+            self.device = torch.device(cuda)
+        elif self.cfg['use_gpu'] == 'cpu':
+            self.device = torch.device("cpu")
         self.saving_dir = self.cfg['project_name']
         # check contains three directories: local, global, and logs
         if not os.path.exists(self.saving_dir):
             os.makedirs(self.saving_dir)
-        torch.save(self.cfg, os.path.join(self.saving_dir, 'cfg.pth'))
+        self.start_time = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        torch.save(self.cfg, os.path.join(self.saving_dir, f'cfg_{self.start_time}.pth'))
         self.local_dir = os.path.join(self.saving_dir, 'local')
         self.results = []
         if self.cfg['save']:
@@ -108,6 +114,8 @@ class LocalSingleGPUTrainer:
         lr = self.cfg['lr']
         if 'weight_decay' in self.cfg:
             weight_decay = self.cfg['weight_decay']
+        if 'momentum' in self.cfg:
+            momentum = self.cfg['momentum']
         local_epoch = self.cfg['local_round']
         num_clients_per_round = self.cfg['num_clients_per_round']
         print('Training Starts!')
@@ -127,7 +135,7 @@ class LocalSingleGPUTrainer:
                     sampler=SubsetRandomSampler(indices=data_idx),
                     batch_size=batch_size)
                 if self.cfg['optimizer'] == "SGD":
-                    optimizer = torch.optim.SGD(self.model.parameters(), lr=lr, momentum=0.5, weight_decay=weight_decay)
+                    optimizer = torch.optim.SGD(self.model.parameters(), lr=lr, momentum=momentum, weight_decay=weight_decay)
                 if self.cfg['optimizer'] == 'Adam':
                     optimizer = torch.optim.Adam(self.model.parameters(), lr=lr)
                 criterion = torch.nn.CrossEntropyLoss()
@@ -153,11 +161,11 @@ class LocalSingleGPUTrainer:
             logging_msg.update(results)
             wandb.log(logging_msg)
             self.results.append(logging_msg)
-            df = pd.DataFrame(self.results)
-            df.to_csv(self.saving_dir + '/results.csv')
             if self.cfg['save']:
                 torch.save(self.model.state_dict(), f'{self.global_dir}/global_model_{e}.pth')
                 torch.save(params_dict, f'{self.local_dir}/local_model_{e}.pth')
+        df = pd.DataFrame(self.results)
+        df.to_csv(self.saving_dir + f'/results_{self.start_time}.csv')
             
             
            

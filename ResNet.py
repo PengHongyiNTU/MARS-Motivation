@@ -111,24 +111,24 @@ class ResNet(nn.Module):
         return out
 
 
-def ResNet18(input_channels):
-    return ResNet(input_channels, BasicBlock, [2, 2, 2, 2])
+def ResNet18(input_channels, num_classes=10):
+    return ResNet(input_channels, BasicBlock, [2, 2, 2, 2], num_classes=num_classes)
 
 
-def ResNet34(input_channels):
-    return ResNet(input_channels, BasicBlock, [3, 4, 6, 3])
+def ResNet34(input_channels, num_classes=10):
+    return ResNet(input_channels, BasicBlock, [3, 4, 6, 3], num_classes=num_classes)
 
 
-def ResNet50(input_channels):
-    return ResNet(input_channels, Bottleneck, [3, 4, 6, 3])
+def ResNet50(input_channels, num_classes=10):
+    return ResNet(input_channels, Bottleneck, [3, 4, 6, 3], num_classes=num_classes)
 
 
-def ResNet101(input_channels):
-    return ResNet(input_channels, Bottleneck, [3, 4, 23, 3])
+def ResNet101(input_channels, num_classes=10):
+    return ResNet(input_channels, Bottleneck, [3, 4, 23, 3], num_classes=num_classes)
 
 
-def ResNet152(input_channels):
-    return ResNet(input_channels, Bottleneck, [3, 8, 36, 3])
+def ResNet152(input_channels, num_classes=10):
+    return ResNet(input_channels, Bottleneck, [3, 8, 36, 3], num_classes=num_classes)
 
 
 if __name__ == '__main__':
